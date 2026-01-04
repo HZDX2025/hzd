@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汉责官网</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            margin: 20px;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+        h1 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .tip {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .arrow-guide {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            background: rgba(0,0,0,0.75);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            display: none;
+            animation: bounce 1s infinite;
+        }
+        .arrow-guide::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            right: 30px;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid rgba(0,0,0,0.75);
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        .step {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .step-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        .step-num {
+            width: 24px;
+            height: 24px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        /* 微信环境检测 */
+        .wechat-only {
+            display: none;
+        }
+        .browser-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- 右上角箭头提示（微信内显示） -->
+    <div class="arrow-guide" id="arrowGuide">
+        点击右上角 ••• <br>选择「在浏览器中打开」
+    </div>
+
+    <div class="container">
+        <div class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm0 12.27L4.37 11 12 6.73 19.63 11 12 15.27zM12 19l-7-3.8v-2.73l7 3.8 7-3.8v2.73L12 19z"/>
+            </svg>
+        </div>
+        
+        <h1>汉责官网</h1>
+        
+        <!-- 微信内显示的内容 -->
+        <div class="wechat-only" id="wechatContent">
+            <p class="tip">当前在微信中打开<br>请点击右上角菜单，选择在浏览器中打开</p>
+            <div class="step">
+                <div class="step-item">
+                    <span class="step-num">1</span>
+                    点击右上角 <strong>•••</strong> 按钮
+                </div>
+                <div class="step-item">
+                    <span class="step-num">2</span>
+                    选择「在浏览器中打开」
+                </div>
+            </div>
+        </div>
+        
+        <!-- 浏览器内显示的内容 -->
+        <div class="browser-content" id="browserContent">
+            <p class="tip">欢迎访问汉责官网</p>
+            <a href="https://hzdx2025.github.io/didactic-octo-funicular/" class="btn">进入网站</a>
+        </div>
+    </div>
+
+    <script>
+        // 检测是否在微信环境中
+        function isWechat() {
+            return /micromessenger/i.test(navigator.userAgent);
+        }
+        
+        // 检测是否在移动端
+        function isMobile() {
+            return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+        }
+        
+        window.onload = function() {
+            if (isWechat()) {
+                // 微信环境：显示引导内容
+                document.getElementById('wechatContent').style.display = 'block';
+                document.getElementById('browserContent').style.display = 'none';
+                document.getElementById('arrowGuide').style.display = 'block';
+            } else {
+                // 非微信环境：直接跳转或显示入口
+                document.getElementById('wechatContent').style.display = 'none';
+                document.getElementById('browserContent').style.display = 'block';
+                
+                // 如果是从微信跳转过来的浏览器，自动跳转
+                if (document.referrer.includes('weixin') || sessionStorage.getItem('fromWechat')) {
+                    window.location.href = 'https://hzdx2025.github.io/didactic-octo-funicular/';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
